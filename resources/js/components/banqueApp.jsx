@@ -570,7 +570,7 @@ function SignUpPage({ setPage }) {
   const s = strength();
  
   const nextStep = () => {
-    if (!form.nom || !form.prenom || !form.email || !form.telephone || !form.banque) {
+    if (!form.nom || !form.prenom || !form.email || !form.telephone) {
       setError("Veuillez remplir tous les champs !");
       return;
     }
@@ -668,7 +668,18 @@ function SignUpPage({ setPage }) {
  
           <div>
             <label style={{ display: "block", fontSize: 11, fontWeight: 600, color: PRIMARY, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 6 }}>Téléphone *</label>
-            <input className="input-field" type="tel" name="telephone" placeholder="+261 34 00 000 00" value={form.telephone} onChange={handle} required />
+              <input
+                className="input-field"
+                type="tel"
+                name="telephone"
+                placeholder="034 00 000 00"
+                value={form.telephone}
+                onChange={(e) => {
+                  const valeur = e.target.value.replace(/[^0-9]/g, '');
+                  setForm({ ...form, telephone: valeur });
+                }}
+                required
+              />          
           </div>
   
           <button type="button" className="btn-dark" style={{ marginTop: 4 }} onClick={nextStep}>

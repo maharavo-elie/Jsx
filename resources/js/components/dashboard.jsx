@@ -568,22 +568,39 @@ function ListePage({ prets, setPrets }) {
           <div className="card slide-in" style={{ width: 560, maxWidth: "95vw" }} onClick={e => e.stopPropagation()}>
             <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 20, color: PRIMARY, fontWeight: 900, marginBottom: 20 }}>✏️ Modifier le prêt</h2>
             <form onSubmit={modifier} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
-                {[
-                  { label: "Nom client", key: "nom_client", type: "text" },
-                  { label: "Nom banque", key: "nom_banque", type: "text" },
-                  { label: "Montant (Ar)", key: "montant", type: "number" },
-                  { label: "Taux (%)", key: "taux", type: "number" },
-                  { label: "Date du prêt", key: "date_du_pret", type: "date" },
-                  { label: "Durée (mois)", key: "duree", type: "number" },
-                ].map(f => (
-                  <div key={f.key}>
-                    <label style={{ display: "block", fontSize: 11, fontWeight: 600, color: PRIMARY, textTransform: "uppercase", marginBottom: 6 }}>{f.label}</label>
-                    <input className="input-field" type={f.type} value={editPret[f.key]} onChange={e => setEditPret({ ...editPret, [f.key]: e.target.value })} required step={f.key === "taux" ? "0.1" : undefined} />
-                  </div>
-                ))}
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+              {[
+                { label: "Nom client", key: "nom_client", type: "text" },
+                { label: "Montant (Ar)", key: "montant", type: "number" },
+                { label: "Taux (%)", key: "taux", type: "number" },
+                { label: "Date du prêt", key: "date_du_pret", type: "date" },
+                { label: "Durée (mois)", key: "duree", type: "number" },
+              ].map(f => (
+                <div key={f.key}>
+                  <label style={{ display: "block", fontSize: 11, fontWeight: 600, color: PRIMARY, textTransform: "uppercase", marginBottom: 6 }}>{f.label}</label>
+                  <input className="input-field" type={f.type} value={editPret[f.key]} onChange={e => setEditPret({ ...editPret, [f.key]: e.target.value })} required step={f.key === "taux" ? "0.1" : undefined} />
+                </div>
+              ))}
+
+              {/* SELECT BANQUE */}
+              <div>
+                <label style={{ display: "block", fontSize: 11, fontWeight: 600, color: PRIMARY, textTransform: "uppercase", marginBottom: 6 }}>Banque</label>
+                <select
+                  className="input-field"
+                  value={editPret.nom_banque}
+                  onChange={e => setEditPret({ ...editPret, nom_banque: e.target.value })}
+                  required
+                  style={{ cursor: "pointer" }}
+                >
+                  {!["BFV Société Générale","BOA Madagascar","Accès Banque Madagascar","MCB Madagascar","BNI Madagascar","Société Générale Madagascar","Autre"].includes(editPret.nom_banque) && (
+                    <option value={editPret.nom_banque}>{editPret.nom_banque}</option>
+                  )}
+                  {["BFV Société Générale","BOA Madagascar","Accès Banque Madagascar","MCB Madagascar","BNI Madagascar","Société Générale Madagascar","Autre"].map(b => (
+                    <option key={b} value={b}>{b}</option>
+                  ))}
+                </select>
               </div>
- 
+            </div>
               {editPret.montant && editPret.taux && (
                 <div style={{ background: LIGHT, borderRadius: 8, padding: "12px 16px", display: "flex", justifyContent: "space-between" }}>
                   <span style={{ color: "#64748B", fontSize: 13 }}>💡 Nouveau montant à rembourser :</span>

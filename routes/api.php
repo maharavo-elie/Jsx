@@ -25,6 +25,7 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/check-email', [AuthController::class, 'checkEmail']);
 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::put('/profile', [AuthController::class, 'updateProfile']);
     Route::get('/pre-bancaires',       [PreBanquaireController::class, 'index']);
     Route::post('/pre-bancaires',      [PreBanquaireController::class, 'store']);
     Route::put('/pre-bancaires/{id}',  [PreBanquaireController::class, 'update']);

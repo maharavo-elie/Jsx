@@ -13,7 +13,9 @@ const GlobalStyles = () => (
   <style>{`
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap');
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
     body { overflow-x: hidden; }
+    img, svg { max-width: 100%; }
  
     .btn-primary {
       background: white; color: ${PRIMARY};
@@ -97,15 +99,206 @@ const GlobalStyles = () => (
     .stat-card:hover { background: rgba(255,255,255,0.05); }
  
     .auth-panel { display: flex; }
-    @media (max-width: 768px) {
-      .auth-panel { display: none !important; }
-      .hero-flex { flex-direction: column !important; }
-      .card-mockup { display: none !important; }
-      .stats-row { flex-direction: column !important; }
-      .stat-card { border-left: none !important; border-top: 1px solid rgba(255,255,255,0.12); }
-      .services-grid { grid-template-columns: 1fr 1fr !important; }
-      .form-row { flex-direction: column !important; }
-    }
+    .auth-layout { min-width: 0; }
+    .auth-content { min-width: 0; }
+      @media (max-width: 1024px) {
+        .services-grid {
+          grid-template-columns: repeat(2, 1fr) !important;
+        }
+
+        .hero-flex {
+          gap: 40px !important;
+        }
+
+        .card-mockup {
+          transform: scale(0.9);
+        }
+      }
+
+      @media (max-width: 768px) {
+
+        /* NAVBAR */
+        nav {
+          padding: 0 20px !important;
+          gap: 14px;
+          min-height: 70px;
+        }
+
+        nav > div:first-child {
+          flex: 1;
+          min-width: 170px;
+        }
+
+        .auth-panel {
+          display: none !important;
+        }
+
+        .auth-layout {
+          min-height: 100vh !important;
+          padding-top: 96px !important;
+        }
+
+        .auth-content {
+          padding: 28px 20px 44px !important;
+          align-items: flex-start !important;
+        }
+
+        .hero-flex {
+          flex-direction: column !important;
+          text-align: center;
+          gap: 50px !important;
+        }
+
+        .card-mockup {
+          display: none !important;
+        }
+
+        .stats-row {
+          flex-direction: column !important;
+        }
+
+        .stat-card {
+          border-left: none !important;
+          border-top: 1px solid rgba(255,255,255,0.12);
+          padding: 24px 0 !important;
+        }
+
+        .services-grid {
+          grid-template-columns: 1fr !important;
+        }
+
+        .form-row {
+          flex-direction: column !important;
+        }
+
+        /* HERO */
+        #section-accueil {
+          padding: 110px 20px 60px !important;
+          min-height: auto !important;
+        }
+
+        #section-accueil h1 {
+          font-size: 40px !important;
+          line-height: 1.2 !important;
+        }
+
+        #section-accueil {
+          padding-top: 150px !important;
+        }
+
+        #section-accueil p {
+          max-width: 100% !important;
+          font-size: 14px !important;
+        }
+
+        /* BOUTONS HERO */
+        #section-accueil .fade-in {
+          justify-content: center !important;
+          flex-wrap: wrap;
+        }
+
+        .btn-primary,
+        .btn-outline,
+        .btn-dark {
+          width: 100%;
+          text-align: center;
+          justify-content: center;
+        }
+
+        /* SERVICES */
+        #section-services {
+          padding: 70px 20px !important;
+        }
+
+        #section-services h2 {
+          font-size: 30px !important;
+        }
+
+        /* À PROPOS */
+        #section-apropos > div {
+          flex-direction: column !important;
+          gap: 40px !important;
+        }
+
+        #section-apropos {
+          padding: 70px 20px !important;
+        }
+
+        #section-apropos h2 {
+          font-size: 30px !important;
+        }
+
+        /* AUTH */
+        form {
+          width: 100%;
+        }
+
+        /* CTA */
+        section:last-of-type h2 {
+          font-size: 28px !important;
+        }
+
+        /* FOOTER */
+        footer {
+          padding: 28px 20px !important;
+        }
+      }
+
+      @media (max-width: 480px) {
+
+        nav {
+          height: auto !important;
+          padding: 12px 16px !important;
+          flex-wrap: wrap;
+          gap: 10px;
+        }
+
+        nav > div:nth-child(2) {
+          width: 100%;
+          justify-content: center;
+          gap: 18px !important;
+          order: 3;
+        }
+
+        nav > div:nth-child(3) {
+          width: 100%;
+          order: 2;
+        }
+
+        nav > div:nth-child(3) button {
+          flex: 1;
+        }
+
+        #section-accueil h1 {
+          font-size: 31px !important;
+        }
+
+        #section-accueil {
+          padding-top: 190px !important;
+        }
+
+        #section-services h2,
+        #section-apropos h2,
+        section:last-of-type h2 {
+          font-size: 26px !important;
+        }
+
+        .service-card {
+          padding: 24px 18px !important;
+        }
+
+        .input-field {
+          padding: 12px 14px !important;
+        }
+
+        .auth-layout {
+          padding-top: 158px !important;
+        }
+
+        .auth-content {
+          padding: 22px 16px 38px !important;
+        }
+      }
   `}</style>
 );
  
@@ -154,7 +347,14 @@ function Navbar({ page, setPage, activeSection, setActiveSection }) {
       </div>
  
       {/* Liens */}
-      <div style={{ display: "flex", gap: 36 }}>
+      <div
+        style={{
+          display: "flex",
+          gap: 36,
+          flexWrap: "wrap",
+          justifyContent: "center",
+        }}
+      >
         {navLinks.map(l => (
           <button
             key={l.key}
@@ -167,7 +367,13 @@ function Navbar({ page, setPage, activeSection, setActiveSection }) {
       </div>
  
       {/* Boutons */}
-      <div style={{ display: "flex", gap: 10 }}>
+      <div
+        style={{
+          display: "flex",
+          gap: 10,
+          flexWrap: "wrap",
+        }}
+      >
         <button className="btn-outline" onClick={() => setPage("login")}>Connexion</button>
         <button className="btn-primary" onClick={() => setPage("signup")}>Ouvrir un compte</button>
       </div>
@@ -399,7 +605,7 @@ function HomePage({ setPage }) {
 ───────────────────────────────────────── */
 function AuthLayout({ children, title, subtitle, setPage }) {
   return (
-    <div style={{ minHeight: "100vh", display: "flex", paddingTop: 70 }}>
+    <div className="auth-layout" style={{ minHeight: "100vh", display: "flex", paddingTop: 70 }}>
       <div className="auth-panel" style={{
         flex: "0 0 42%",
         background: `linear-gradient(160deg, ${PRIMARY} 0%, #0D3180 50%, ${ACCENT} 100%)`,
@@ -429,7 +635,7 @@ function AuthLayout({ children, title, subtitle, setPage }) {
         </div>
       </div>
  
-      <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", background: "#F8FAFF", padding: "40px 60px" }}>
+      <div className="auth-content" style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", background: "#F8FAFF", padding: "40px 60px" }}>
         <div className="slide-in" style={{ width: "100%", maxWidth: 480 }}>
           {children}
         </div>

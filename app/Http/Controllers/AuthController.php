@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class AuthController extends Controller
 {
@@ -69,6 +70,25 @@ class AuthController extends Controller
     {
         $exists = User::where('email', $request->email)->exists();
         return response()->json(['exists' => $exists]);
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $user = $request->user();
+
+        $data = $request->validate([
+            'nom'       => 'required|string|max:100',
+            'prenom'    => 'required|string|max:100',
+            'email'     => ['required', 'email', Rule::unique('users', 'email')->ignore($user->id)],
+            'telephone' => 'required|string|max:20',
+        ]);
+
+        $user->update($data);
+
+        return response()->json([
+            'message' => 'Profil mis à jour avec succès !',
+            'user'    => $user->fresh(),
+        ]);
     }
 
 }

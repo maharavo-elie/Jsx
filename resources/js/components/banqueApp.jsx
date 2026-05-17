@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import ReactDOM from 'react-dom/client';
 import Dashboard from './dashboard';
  
-const PRIMARY = "#0A2463";
-const ACCENT = "#1B4FD8";
-const LIGHT = "#E8EEFF";
+const PRIMARY = "var(--bank-primary)";
+const ACCENT = "var(--bank-accent)";
+const LIGHT = "var(--bank-soft)";
  
 /* ─────────────────────────────────────────
    GLOBAL STYLES
@@ -14,11 +14,66 @@ const GlobalStyles = () => (
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap');
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
-    body { overflow-x: hidden; }
+    body { overflow-x: hidden; background: #020914; }
     img, svg { max-width: 100%; }
+
+    .bank-theme {
+      --bank-page: #EEF4FF;
+      --bank-card: #FFFFFF;
+      --bank-card-soft: #F8FBFF;
+      --bank-primary: #0B2A4A;
+      --bank-accent: #3B82F6;
+      --bank-soft: #E8F1FF;
+      --bank-text: #172033;
+      --bank-muted: #64748B;
+      --bank-border: #DDE8F6;
+      --bank-nav: rgba(11, 42, 74, 0.94);
+      --bank-hero-start: #071428;
+      --bank-hero-mid: #0B2A4A;
+      --bank-hero-end: #2563EB;
+      --bank-shadow: 0 24px 60px rgba(11, 42, 74, 0.14);
+      min-height: 100vh;
+      background: var(--bank-page);
+      color: var(--bank-text);
+    }
+
+    .bank-theme-dark {
+      --bank-page: #020914;
+      --bank-card: #0E1A2B;
+      --bank-card-soft: #13233A;
+      --bank-primary: #EAF2FF;
+      --bank-accent: #4D8DF7;
+      --bank-soft: #14253D;
+      --bank-text: #EAF2FF;
+      --bank-muted: #9AB3D7;
+      --bank-border: #243B5C;
+      --bank-nav: rgba(4, 13, 26, 0.94);
+      --bank-hero-start: #020914;
+      --bank-hero-mid: #06162A;
+      --bank-hero-end: #0F3D78;
+      --bank-shadow: 0 28px 70px rgba(0, 0, 0, 0.42);
+    }
+
+    .theme-switch {
+      min-height: 42px;
+      padding: 0 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.22);
+      background: rgba(255,255,255,0.08);
+      color: white;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s, transform 0.2s;
+    }
+    .theme-switch:hover { background: rgba(255,255,255,0.14); border-color: rgba(255,255,255,0.38); transform: translateY(-1px); }
  
     .btn-primary {
-      background: white; color: ${PRIMARY};
+      background: white; color: #0B2A4A;
       border: none; padding: 13px 32px;
       font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 14px;
       letter-spacing: 0.04em; cursor: pointer; transition: all 0.25s;
@@ -35,13 +90,13 @@ const GlobalStyles = () => (
     .btn-outline:hover { border-color: white; background: rgba(255,255,255,0.1); }
  
     .btn-dark {
-      background: ${PRIMARY}; color: white;
+      background: linear-gradient(135deg, #4D8DF7, #3B74F2); color: white;
       border: none; padding: 14px 0; width: 100%;
       font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 15px;
       letter-spacing: 0.05em; cursor: pointer; transition: all 0.3s;
       clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
     }
-    .btn-dark:hover { background: ${ACCENT}; transform: translateY(-2px); box-shadow: 0 12px 32px rgba(10,36,99,0.35); }
+    .btn-dark:hover { filter: brightness(1.06); transform: translateY(-2px); box-shadow: 0 12px 32px rgba(77,141,247,0.35); }
     .btn-dark:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
  
     .nav-link {
@@ -55,22 +110,23 @@ const GlobalStyles = () => (
  
     .input-field {
       width: 100%; padding: 13px 16px;
-      border: 1.5px solid #E2E8F0; outline: none;
-      font-family: 'DM Sans', sans-serif; font-size: 14px; color: #1E293B;
-      background: #F8FAFF; transition: all 0.25s; border-radius: 2px;
+      border: 1.5px solid var(--bank-border); outline: none;
+      font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--bank-text);
+      background: var(--bank-card-soft); transition: all 0.25s; border-radius: 8px;
     }
-    .input-field:focus { border-color: ${ACCENT}; background: white; box-shadow: 0 0 0 4px rgba(27,79,216,0.08); }
-    .input-field::placeholder { color: #94A3B8; }
+    .input-field:focus { border-color: ${ACCENT}; background: var(--bank-card); box-shadow: 0 0 0 4px rgba(77,141,247,0.12); }
+    .input-field::placeholder { color: var(--bank-muted); }
  
     .service-card {
-      background: white; border: 1px solid #E2E8F0; padding: 32px 24px;
+      background: var(--bank-card); border: 1px solid var(--bank-border); padding: 32px 24px;
       cursor: pointer; transition: all 0.3s; position: relative; overflow: hidden;
+      color: var(--bank-text);
     }
     .service-card::after {
       content: ''; position: absolute; bottom: 0; left: 0;
       width: 0; height: 3px; background: ${ACCENT}; transition: width 0.3s;
     }
-    .service-card:hover { transform: translateY(-6px); box-shadow: 0 20px 48px rgba(10,36,99,0.12); }
+    .service-card:hover { transform: translateY(-6px); box-shadow: var(--bank-shadow); }
     .service-card:hover::after { width: 100%; }
  
     .floating { animation: float 6s ease-in-out infinite; }
@@ -101,6 +157,13 @@ const GlobalStyles = () => (
     .auth-panel { display: flex; }
     .auth-layout { min-width: 0; }
     .auth-content { min-width: 0; }
+    .auth-card {
+      background: var(--bank-card);
+      border: 1px solid var(--bank-border);
+      border-radius: 22px;
+      padding: 34px;
+      box-shadow: var(--bank-shadow);
+    }
       @media (max-width: 1024px) {
         .services-grid {
           grid-template-columns: repeat(2, 1fr) !important;
@@ -305,7 +368,7 @@ const GlobalStyles = () => (
 /* ─────────────────────────────────────────
    NAVBAR
 ───────────────────────────────────────── */
-function Navbar({ page, setPage, activeSection, setActiveSection }) {
+function Navbar({ page, setPage, activeSection, setActiveSection, theme, toggleTheme }) {
   const [scrolled, setScrolled] = useState(false);
  
   useEffect(() => {
@@ -332,16 +395,16 @@ function Navbar({ page, setPage, activeSection, setActiveSection }) {
   return (
     <nav style={{
       position: "fixed", top: 0, left: 0, right: 0, zIndex: 200,
-      background: scrolled || page !== "home" ? PRIMARY : "transparent",
+      background: scrolled || page !== "home" ? "var(--bank-nav)" : "transparent",
       transition: "background 0.4s, box-shadow 0.4s",
-      boxShadow: scrolled || page !== "home" ? "0 4px 24px rgba(10,36,99,0.3)" : "none",
+      boxShadow: scrolled || page !== "home" ? "0 4px 24px rgba(2,9,20,0.34)" : "none",
       padding: "0 40px", display: "flex", alignItems: "center",
       justifyContent: "space-between", height: 70,
     }}>
       {/* Logo */}
       <div onClick={() => { setPage("home"); setActiveSection("accueil"); }} style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }}>
         <div style={{ width: 34, height: 34, background: "white", borderRadius: 6, display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <span style={{ color: PRIMARY, fontFamily: "'Playfair Display', serif", fontWeight: 900, fontSize: 17 }}>B</span>
+          <span style={{ color: "#0B2A4A", fontFamily: "'Playfair Display', serif", fontWeight: 900, fontSize: 17 }}>B</span>
         </div>
         <span style={{ color: "white", fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: 19 }}>BanqueApp</span>
       </div>
@@ -374,6 +437,10 @@ function Navbar({ page, setPage, activeSection, setActiveSection }) {
           flexWrap: "wrap",
         }}
       >
+        <button className="theme-switch" onClick={toggleTheme} type="button" aria-label="Changer le theme">
+          <span>{theme === "dark" ? "☀" : "☾"}</span>
+          <span>{theme === "dark" ? "Clair" : "Sombre"}</span>
+        </button>
         <button className="btn-outline" onClick={() => setPage("login")}>Connexion</button>
         <button className="btn-primary" onClick={() => setPage("signup")}>Ouvrir un compte</button>
       </div>
@@ -406,7 +473,7 @@ function HomePage({ setPage }) {
  
       {/* ── HERO ── */}
       <section id="section-accueil" className="grid-bg" style={{
-        background: `linear-gradient(135deg, ${PRIMARY} 0%, #0D3180 55%, ${ACCENT} 100%)`,
+        background: "linear-gradient(135deg, var(--bank-hero-start) 0%, var(--bank-hero-mid) 55%, var(--bank-hero-end) 100%)",
         minHeight: "100vh", display: "flex", flexDirection: "column",
         justifyContent: "center", padding: "120px 40px 80px",
         position: "relative", overflow: "hidden",
@@ -493,16 +560,16 @@ function HomePage({ setPage }) {
       </section>
  
       {/* ── SERVICES ── */}
-      <section id="section-services" style={{ padding: "90px 40px", background: "#F8FAFF" }}>
+      <section id="section-services" style={{ padding: "90px 40px", background: "var(--bank-page)" }}>
         <div style={{ maxWidth: 1160, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 56 }}>
             <div style={{ display: "inline-block", background: LIGHT, color: ACCENT, fontSize: 11, letterSpacing: "0.14em", textTransform: "uppercase", padding: "5px 14px", marginBottom: 18, border: `1px solid rgba(27,79,216,0.15)` }}>
               Nos fonctionnalités
             </div>
-            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 38, color: PRIMARY, fontWeight: 900 }}>
+            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 38, color: "var(--bank-text)", fontWeight: 900 }}>
               Tout pour gérer vos prêts pré-bancaires
             </h2>
-            <p style={{ color: "#64748B", fontSize: 15, marginTop: 14, maxWidth: 500, margin: "14px auto 0", lineHeight: 1.7 }}>
+            <p style={{ color: "var(--bank-muted)", fontSize: 15, marginTop: 14, maxWidth: 500, margin: "14px auto 0", lineHeight: 1.7 }}>
               Une plateforme complète dédiée à la gestion des dossiers de prêts pré-bancaires.
             </p>
           </div>
@@ -511,8 +578,8 @@ function HomePage({ setPage }) {
             {services.map((s, i) => (
               <div key={i} className="service-card" onMouseEnter={() => setHovered(i)} onMouseLeave={() => setHovered(null)}>
                 <div style={{ fontSize: 34, marginBottom: 18 }}>{s.icon}</div>
-                <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 17, color: PRIMARY, fontWeight: 700, marginBottom: 10 }}>{s.title}</h3>
-                <p style={{ fontSize: 13, color: "#64748B", lineHeight: 1.7, fontWeight: 300 }}>{s.desc}</p>
+                <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 17, color: "var(--bank-text)", fontWeight: 700, marginBottom: 10 }}>{s.title}</h3>
+                <p style={{ fontSize: 13, color: "var(--bank-muted)", lineHeight: 1.7, fontWeight: 300 }}>{s.desc}</p>
                 <div style={{ marginTop: 20, color: ACCENT, fontSize: 13, fontWeight: 500, display: "flex", alignItems: "center", gap: 5 }}>
                   En savoir plus <span style={{ transition: "transform 0.2s", transform: hovered === i ? "translateX(5px)" : "none" }}>→</span>
                 </div>
@@ -523,20 +590,20 @@ function HomePage({ setPage }) {
       </section>
  
       {/* ── À PROPOS ── */}
-      <section id="section-apropos" style={{ padding: "90px 40px", background: "white" }}>
+      <section id="section-apropos" style={{ padding: "90px 40px", background: "var(--bank-card)" }}>
         <div style={{ maxWidth: 1160, margin: "0 auto", display: "flex", alignItems: "center", gap: 80 }}>
           {/* Texte */}
           <div style={{ flex: 1 }}>
             <div style={{ display: "inline-block", background: LIGHT, color: ACCENT, fontSize: 11, letterSpacing: "0.14em", textTransform: "uppercase", padding: "5px 14px", marginBottom: 18, border: `1px solid rgba(27,79,216,0.15)` }}>
               À propos
             </div>
-            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 38, color: PRIMARY, fontWeight: 900, marginBottom: 20, lineHeight: 1.2 }}>
+            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 38, color: "var(--bank-text)", fontWeight: 900, marginBottom: 20, lineHeight: 1.2 }}>
               Qu'est-ce qu'un prêt pré-bancaire ?
             </h2>
-            <p style={{ color: "#64748B", fontSize: 15, lineHeight: 1.9, marginBottom: 20 }}>
+            <p style={{ color: "var(--bank-muted)", fontSize: 15, lineHeight: 1.9, marginBottom: 20 }}>
               Un prêt pré-bancaire est un crédit accordé à des personnes qui n'ont pas encore accès aux services bancaires traditionnels. Il s'agit d'une étape intermédiaire vers l'intégration financière formelle.
             </p>
-            <p style={{ color: "#64748B", fontSize: 15, lineHeight: 1.9, marginBottom: 32 }}>
+            <p style={{ color: "var(--bank-muted)", fontSize: 15, lineHeight: 1.9, marginBottom: 32 }}>
               BanqueApp vous aide à gérer ces dossiers efficacement : enregistrement des clients, calcul automatique des intérêts, suivi des remboursements et génération de bilans.
             </p>
             <div style={{ display: "flex", gap: 32 }}>
@@ -546,8 +613,8 @@ function HomePage({ setPage }) {
                 { value: "Complet", label: "Suivi intégral" },
               ].map((s, i) => (
                 <div key={i}>
-                  <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 22, color: PRIMARY, fontWeight: 900 }}>{s.value}</div>
-                  <div style={{ color: "#94A3B8", fontSize: 13 }}>{s.label}</div>
+                  <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 22, color: "var(--bank-text)", fontWeight: 900 }}>{s.value}</div>
+                  <div style={{ color: "var(--bank-muted)", fontSize: 13 }}>{s.label}</div>
                 </div>
               ))}
             </div>
@@ -555,7 +622,7 @@ function HomePage({ setPage }) {
  
           {/* Visuel */}
           <div style={{ flex: "0 0 380px" }}>
-            <div style={{ background: `linear-gradient(135deg, ${PRIMARY} 0%, ${ACCENT} 100%)`, borderRadius: 16, padding: 32, color: "white" }}>
+            <div style={{ background: "linear-gradient(135deg, var(--bank-hero-start) 0%, var(--bank-hero-end) 100%)", borderRadius: 16, padding: 32, color: "white" }}>
               <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 20, fontWeight: 700, marginBottom: 24 }}>Comment ça marche ?</div>
               {[
                 { num: "01", title: "Inscription", desc: "Créez votre compte administrateur en quelques minutes." },
@@ -576,7 +643,7 @@ function HomePage({ setPage }) {
       </section>
  
       {/* ── CTA ── */}
-      <section style={{ background: `linear-gradient(135deg, ${PRIMARY} 0%, ${ACCENT} 100%)`, padding: "72px 40px", textAlign: "center", position: "relative", overflow: "hidden" }}>
+      <section style={{ background: "linear-gradient(135deg, var(--bank-hero-start) 0%, var(--bank-hero-end) 100%)", padding: "72px 40px", textAlign: "center", position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", top: -60, right: -60, width: 280, height: 280, borderRadius: "50%", background: "rgba(255,255,255,0.04)" }} />
         <div style={{ position: "relative", maxWidth: 560, margin: "0 auto" }}>
           <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 36, color: "white", fontWeight: 900, marginBottom: 14 }}>
@@ -592,7 +659,7 @@ function HomePage({ setPage }) {
       </section>
  
       {/* ── FOOTER ── */}
-      <footer style={{ background: PRIMARY, padding: "36px 40px", textAlign: "center" }}>
+      <footer style={{ background: "var(--bank-hero-start)", padding: "36px 40px", textAlign: "center" }}>
         <div style={{ fontFamily: "'Playfair Display', serif", color: "white", fontSize: 18, fontWeight: 700, marginBottom: 6 }}>BanqueApp</div>
         <div style={{ color: "rgba(255,255,255,0.38)", fontSize: 12 }}>© 2026 BanqueApp — Plateforme de gestion pré-bancaire. Tous droits réservés.</div>
       </footer>
@@ -608,7 +675,7 @@ function AuthLayout({ children, title, subtitle, setPage }) {
     <div className="auth-layout" style={{ minHeight: "100vh", display: "flex", paddingTop: 70 }}>
       <div className="auth-panel" style={{
         flex: "0 0 42%",
-        background: `linear-gradient(160deg, ${PRIMARY} 0%, #0D3180 50%, ${ACCENT} 100%)`,
+        background: "linear-gradient(160deg, var(--bank-hero-start) 0%, var(--bank-hero-mid) 50%, var(--bank-hero-end) 100%)",
         flexDirection: "column", justifyContent: "center",
         padding: "60px 52px", position: "relative", overflow: "hidden",
       }}>
@@ -617,7 +684,7 @@ function AuthLayout({ children, title, subtitle, setPage }) {
  
         <div onClick={() => setPage("home")} style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 60, cursor: "pointer" }}>
           <div style={{ width: 32, height: 32, background: "white", borderRadius: 6, display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <span style={{ color: PRIMARY, fontFamily: "'Playfair Display', serif", fontWeight: 900, fontSize: 16 }}>B</span>
+            <span style={{ color: "#0B2A4A", fontFamily: "'Playfair Display', serif", fontWeight: 900, fontSize: 16 }}>B</span>
           </div>
           <span style={{ color: "white", fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: 18 }}>BanqueApp</span>
         </div>
@@ -635,8 +702,8 @@ function AuthLayout({ children, title, subtitle, setPage }) {
         </div>
       </div>
  
-      <div className="auth-content" style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", background: "#F8FAFF", padding: "40px 60px" }}>
-        <div className="slide-in" style={{ width: "100%", maxWidth: 480 }}>
+      <div className="auth-content" style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", background: "var(--bank-page)", padding: "40px 60px" }}>
+        <div className="slide-in auth-card" style={{ width: "100%", maxWidth: 480 }}>
           {children}
         </div>
       </div>
@@ -685,7 +752,7 @@ function LoginPage({ setPage }) {
       <div style={{ marginBottom: 32 }}>
         <div style={{ display: "inline-block", background: LIGHT, color: ACCENT, fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", padding: "4px 12px", marginBottom: 14, border: `1px solid rgba(27,79,216,0.18)` }}>Connexion</div>
         <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 28, color: PRIMARY, fontWeight: 900, marginBottom: 6 }}>Se connecter</h1>
-        <p style={{ color: "#64748B", fontSize: 14 }}>Pas encore de compte ? <button onClick={() => setPage("signup")} style={{ color: ACCENT, background: "none", border: "none", cursor: "pointer", fontWeight: 600, fontSize: 14, fontFamily: "'DM Sans', sans-serif" }}>S'inscrire</button></p>
+        <p style={{ color: "var(--bank-muted)", fontSize: 14 }}>Pas encore de compte ? <button onClick={() => setPage("signup")} style={{ color: ACCENT, background: "none", border: "none", cursor: "pointer", fontWeight: 600, fontSize: 14, fontFamily: "'DM Sans', sans-serif" }}>S'inscrire</button></p>
       </div>
  
       {error && (
@@ -706,7 +773,7 @@ function LoginPage({ setPage }) {
           </div>
           <div style={{ position: "relative" }}>
             <input className="input-field" type={showPass ? "text" : "password"} name="password" placeholder="••••••••" value={form.password} onChange={handle} required style={{ paddingRight: 44 }} />
-            <button type="button" onClick={() => setShowPass(!showPass)} style={{ position: "absolute", right: 14, top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", fontSize: 16, color: "#94A3B8" }}>
+            <button type="button" onClick={() => setShowPass(!showPass)} style={{ position: "absolute", right: 14, top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", fontSize: 16, color: "var(--bank-muted)" }}>
               {showPass ? "🙈" : "👁"}
             </button>
           </div>
@@ -824,18 +891,18 @@ function SignUpPage({ setPage }) {
       <div style={{ marginBottom: 28 }}>
         <div style={{ display: "inline-block", background: LIGHT, color: ACCENT, fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", padding: "4px 12px", marginBottom: 14, border: `1px solid rgba(27,79,216,0.18)` }}>Inscription</div>
         <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 28, color: PRIMARY, fontWeight: 900, marginBottom: 6 }}>Créer un compte</h1>
-        <p style={{ color: "#64748B", fontSize: 14 }}>Déjà inscrit ? <button onClick={() => setPage("login")} style={{ color: ACCENT, background: "none", border: "none", cursor: "pointer", fontWeight: 600, fontSize: 14, fontFamily: "'DM Sans', sans-serif" }}>Se connecter</button></p>
+        <p style={{ color: "var(--bank-muted)", fontSize: 14 }}>Déjà inscrit ? <button onClick={() => setPage("login")} style={{ color: ACCENT, background: "none", border: "none", cursor: "pointer", fontWeight: 600, fontSize: 14, fontFamily: "'DM Sans', sans-serif" }}>Se connecter</button></p>
       </div>
  
       {/* Steps */}
       <div style={{ display: "flex", alignItems: "center", marginBottom: 24 }}>
         {[1, 2].map((n, i) => (
           <div key={n} style={{ display: "flex", alignItems: "center", flex: i === 0 ? 1 : "none" }}>
-            <div style={{ width: 28, height: 28, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", background: step >= n ? PRIMARY : "#E2E8F0", color: step >= n ? "white" : "#94A3B8", fontSize: 12, fontWeight: 700, flexShrink: 0 }}>{n}</div>
-            {i === 0 && <div style={{ flex: 1, height: 2, background: step >= 2 ? PRIMARY : "#E2E8F0", transition: "background 0.3s", margin: "0 8px" }} />}
+            <div style={{ width: 28, height: 28, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", background: step >= n ? ACCENT : "var(--bank-card-soft)", color: step >= n ? "white" : "var(--bank-muted)", fontSize: 12, fontWeight: 700, flexShrink: 0 }}>{n}</div>
+            {i === 0 && <div style={{ flex: 1, height: 2, background: step >= 2 ? ACCENT : "var(--bank-border)", transition: "background 0.3s", margin: "0 8px" }} />}
           </div>
         ))}
-        <span style={{ marginLeft: 10, fontSize: 12, color: "#64748B" }}>
+        <span style={{ marginLeft: 10, fontSize: 12, color: "var(--bank-muted)" }}>
           {step === 1 ? "Informations personnelles" : "Sécurité du compte"}
         </span>
       </div>
@@ -868,7 +935,7 @@ function SignUpPage({ setPage }) {
               onChange={handle} onBlur={(e) => checkEmail(e.target.value)}
               required style={{ borderColor: emailError ? "#EF4444" : undefined }}
             />
-            {emailChecking && <div style={{ fontSize: 11, color: "#94A3B8", marginTop: 4 }}>⏳ Vérification...</div>}
+            {emailChecking && <div style={{ fontSize: 11, color: "var(--bank-muted)", marginTop: 4 }}>⏳ Vérification...</div>}
             {emailError && <div style={{ fontSize: 11, color: "#EF4444", marginTop: 4 }}>⚠️ {emailError}</div>}
           </div>
  
@@ -901,14 +968,14 @@ function SignUpPage({ setPage }) {
             <label style={{ display: "block", fontSize: 11, fontWeight: 600, color: PRIMARY, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 6 }}>Mot de passe *</label>
             <div style={{ position: "relative" }}>
               <input className="input-field" type={showPass ? "text" : "password"} name="password" placeholder="Min. 8 caractères" value={form.password} onChange={handle} required style={{ paddingRight: 44 }} />
-              <button type="button" onClick={() => setShowPass(!showPass)} style={{ position: "absolute", right: 14, top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", fontSize: 16, color: "#94A3B8" }}>
+              <button type="button" onClick={() => setShowPass(!showPass)} style={{ position: "absolute", right: 14, top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", fontSize: 16, color: "var(--bank-muted)" }}>
                 {showPass ? "🙈" : "👁"}
               </button>
             </div>
             {form.password && (
               <div style={{ marginTop: 8 }}>
                 <div style={{ display: "flex", gap: 4, marginBottom: 4 }}>
-                  {[1, 2, 3, 4].map(i => <div key={i} style={{ flex: 1, height: 3, borderRadius: 2, background: i <= s ? strengthColor[s] : "#E2E8F0", transition: "background 0.3s" }} />)}
+                  {[1, 2, 3, 4].map(i => <div key={i} style={{ flex: 1, height: 3, borderRadius: 2, background: i <= s ? strengthColor[s] : "var(--bank-border)", transition: "background 0.3s" }} />)}
                 </div>
                 <div style={{ fontSize: 11, color: strengthColor[s], fontWeight: 500 }}>Force : {strengthLabel[s]}</div>
               </div>
@@ -925,13 +992,13 @@ function SignUpPage({ setPage }) {
  
           <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
             <input type="checkbox" id="terms" required style={{ accentColor: ACCENT, width: 16, height: 16, marginTop: 2 }} />
-            <label htmlFor="terms" style={{ fontSize: 12, color: "#64748B", lineHeight: 1.6 }}>
+            <label htmlFor="terms" style={{ fontSize: 12, color: "var(--bank-muted)", lineHeight: 1.6 }}>
               J'accepte les <button type="button" style={{ color: ACCENT, background: "none", border: "none", cursor: "pointer", fontSize: 12, fontFamily: "'DM Sans', sans-serif" }}>conditions d'utilisation</button>
             </label>
           </div>
  
           <div style={{ display: "flex", gap: 12 }}>
-            <button type="button" onClick={() => setStep(1)} style={{ flex: "0 0 auto", padding: "14px 20px", background: "white", border: `1.5px solid ${PRIMARY}`, color: PRIMARY, fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 14, cursor: "pointer" }}>
+            <button type="button" onClick={() => setStep(1)} style={{ flex: "0 0 auto", padding: "14px 20px", background: "var(--bank-card)", border: `1.5px solid ${ACCENT}`, color: ACCENT, fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 14, cursor: "pointer" }}>
               ← Retour
             </button>
             <button className="btn-dark" type="submit" disabled={loading || form.password !== form.confirm} style={{ flex: 1 }}>
@@ -953,8 +1020,10 @@ export default function App() {
     return token ? 'dashboard' : 'home';
   });
   const [activeSection, setActiveSection] = useState("accueil");
+  const [theme, setTheme] = useState(() => localStorage.getItem("bank-theme") || "dark");
  
   useEffect(() => { window.scrollTo(0, 0); }, [page]);
+  useEffect(() => { localStorage.setItem("bank-theme", theme); }, [theme]);
  
   const logout = () => {
     localStorage.removeItem('token');
@@ -963,13 +1032,22 @@ export default function App() {
   };
  
   return (
-    <>
+    <div className={`bank-theme bank-theme-${theme}`}>
       <GlobalStyles />
-      {page !== "dashboard" && <Navbar page={page} setPage={setPage} activeSection={activeSection} setActiveSection={setActiveSection} />}
+      {page !== "dashboard" && (
+        <Navbar
+          page={page}
+          setPage={setPage}
+          activeSection={activeSection}
+          setActiveSection={setActiveSection}
+          theme={theme}
+          toggleTheme={() => setTheme(theme === "dark" ? "light" : "dark")}
+        />
+      )}
       {page === "home" && <HomePage setPage={setPage} />}
       {page === "login" && <LoginPage setPage={setPage} />}
       {page === "signup" && <SignUpPage setPage={setPage} />}
       {page === "dashboard" && <Dashboard setPage={setPage} logout={logout} />}
-    </>
+    </div>
   );
 }

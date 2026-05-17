@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 
-const PRIMARY = "#123C69";
-const ACCENT = "#2563EB";
+const PRIMARY = "#0B2A4A";
+const ACCENT = "#4D8DF7";
 const SUCCESS = "#16A34A";
 const DANGER = "#EF4444";
 const WARNING = "#F59E0B";
@@ -101,10 +101,11 @@ export default function Dashboard({ logout }) {
   const [showLogout, setShowLogout] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
   const [user, setUser] = useState(() => JSON.parse(localStorage.getItem("user") || "{}"));
-  const [theme, setTheme] = useState(() => localStorage.getItem("theme") || "light");
+  const [theme, setTheme] = useState(() => localStorage.getItem("bank-dashboard-theme") || localStorage.getItem("bank-theme") || "dark");
 
   useEffect(() => {
-    localStorage.setItem("theme", theme);
+    localStorage.setItem("bank-dashboard-theme", theme);
+    localStorage.setItem("bank-theme", theme);
   }, [theme]);
 
   useEffect(() => {
@@ -138,7 +139,7 @@ export default function Dashboard({ logout }) {
 
   if (loadingData) {
     return (
-      <div className="dashboard-shell dashboard-light loading-screen">
+      <div className="dashboard-shell dashboard-dark loading-screen">
         <div>
           <div className="loading-brand">BanqueApp</div>
           <div className="muted">Chargement des donnees...</div>
@@ -350,9 +351,9 @@ function BilanPage({ prets, setActiveMenu }) {
   }, {}), [prets]);
 
   const cards = [
-    { label: "Total prets", value: prets.length, suffix: "dossiers", icon: "list", color: "#2563EB" },
+    { label: "Total prets", value: prets.length, suffix: "dossiers", icon: "list", color: "#4D8DF7" },
     { label: "Montant prete", value: formatNumber(totals.totalMontant), suffix: "Ar", icon: "money", color: SUCCESS },
-    { label: "A rembourser", value: formatNumber(totals.totalRembourser), suffix: "Ar", icon: "wallet", color: "#7C3AED" },
+    { label: "A rembourser", value: formatNumber(totals.totalRembourser), suffix: "Ar", icon: "wallet", color: "#A8C7FF" },
     { label: "Interets", value: formatNumber(totals.totalInterets), suffix: "Ar", icon: "trend", color: WARNING },
   ];
 
@@ -742,33 +743,33 @@ function DashboardStyles() {
         --surface: #FFFFFF;
         --surface-soft: #F8FBFF;
         --text: #172033;
-        --muted: #667085;
-        --border: #DDE7F4;
+        --muted: #64748B;
+        --border: #DDE8F6;
         --primary: ${PRIMARY};
         --accent: ${ACCENT};
-        --sidebar: #123C69;
-        --sidebar-2: #0B2B4F;
-        --shadow: 0 24px 60px rgba(18,60,105,0.12);
+        --sidebar: #0B2A4A;
+        --sidebar-2: #071B31;
+        --shadow: 0 24px 60px rgba(11,42,74,0.14);
         min-height: 100vh;
         width: 100%;
         display: flex;
         overflow-x: hidden;
-        background: radial-gradient(circle at top right, rgba(37,99,235,0.13), transparent 32%), var(--bg);
+        background: radial-gradient(circle at top right, rgba(77,141,247,0.16), transparent 32%), var(--bg);
         color: var(--text);
         font-family: 'DM Sans', sans-serif;
       }
       .dashboard-dark {
-        --bg: #0F172A;
-        --surface: #172033;
-        --surface-soft: #111827;
-        --text: #E5EEF8;
-        --muted: #9AA8BD;
-        --border: #2C3A4F;
-        --primary: #A8C7FF;
-        --accent: #60A5FA;
-        --sidebar: #0B1220;
-        --sidebar-2: #111827;
-        --shadow: 0 24px 60px rgba(0,0,0,0.32);
+        --bg: #020914;
+        --surface: #0E1A2B;
+        --surface-soft: #13233A;
+        --text: #EAF2FF;
+        --muted: #9AB3D7;
+        --border: #243B5C;
+        --primary: #EAF2FF;
+        --accent: #4D8DF7;
+        --sidebar: #040D1A;
+        --sidebar-2: #08192D;
+        --shadow: 0 28px 70px rgba(0,0,0,0.42);
       }
       .loading-screen { align-items: center; justify-content: center; text-align: center; }
       .loading-brand, h1, h2 { font-family: 'Playfair Display', serif; }
@@ -786,13 +787,13 @@ function DashboardStyles() {
         flex-direction: column;
         background: linear-gradient(180deg, var(--sidebar), var(--sidebar-2));
         color: #fff;
-        box-shadow: 8px 0 36px rgba(11,43,79,0.18);
+        box-shadow: 8px 0 36px rgba(2,9,20,0.26);
         transition: width 0.25s ease, transform 0.25s ease;
         z-index: 20;
       }
       .sidebar.collapsed { width: 78px; }
       .brand-row { height: 76px; display: flex; align-items: center; gap: 12px; padding: 0 18px; border-bottom: 1px solid rgba(255,255,255,0.09); }
-      .brand-mark { width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center; background: rgba(255,255,255,0.95); color: #123C69; }
+      .brand-mark { width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center; background: linear-gradient(135deg, #4D8DF7, #27C4E8); color: #fff; }
       .brand-name { font-family: 'Playfair Display', serif; font-size: 19px; font-weight: 900; white-space: nowrap; }
       .sidebar-user { display: flex; align-items: center; gap: 11px; padding: 16px 18px; border: 0; border-bottom: 1px solid rgba(255,255,255,0.09); background: transparent; color: white; text-align: left; }
       .sidebar-user:hover { background: rgba(255,255,255,0.08); }
@@ -803,7 +804,7 @@ function DashboardStyles() {
       .sidebar-footer { padding: 14px 10px; border-top: 1px solid rgba(255,255,255,0.09); }
       .menu-item { width: 100%; min-height: 44px; display: flex; align-items: center; gap: 12px; border: 0; border-radius: 10px; padding: 11px 14px; background: transparent; color: rgba(255,255,255,0.72); text-align: left; transition: background 0.2s, color 0.2s, transform 0.2s; }
       .menu-item:hover, .menu-item.active { background: rgba(255,255,255,0.12); color: #fff; }
-      .menu-item.active { box-shadow: inset 3px 0 0 #93C5FD; font-weight: 700; }
+      .menu-item.active { box-shadow: inset 3px 0 0 #4D8DF7; font-weight: 700; }
       .sidebar-toggle { position: absolute; top: 24px; right: -15px; width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--border); background: var(--surface); color: var(--primary); display: grid; place-items: center; box-shadow: var(--shadow); }
       .main-content { flex: 1; min-width: 0; padding: 30px; overflow: auto; }
       .dashboard-header { display: flex; align-items: center; justify-content: space-between; gap: 18px; margin-bottom: 28px; }
@@ -814,10 +815,10 @@ function DashboardStyles() {
       .mobile-menu-button { display: none; width: 42px; height: 42px; place-items: center; }
       .profile-trigger { padding: 3px; border-radius: 999px; }
       .theme-toggle { min-height: 42px; display: inline-flex; align-items: center; gap: 8px; padding: 0 14px; color: var(--muted); }
-      .avatar { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: linear-gradient(135deg, var(--accent), #14B8A6); color: #fff; font-weight: 800; font-size: 13px; letter-spacing: 0.04em; }
+      .avatar { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: linear-gradient(135deg, var(--accent), #27C4E8); color: #fff; font-weight: 800; font-size: 13px; letter-spacing: 0.04em; }
       .avatar.small { width: 38px; height: 38px; background: rgba(255,255,255,0.16); }
       .avatar.large { width: 58px; height: 58px; font-size: 18px; }
-      .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; box-shadow: 0 1px 0 rgba(255,255,255,0.04); }
+      .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; box-shadow: 0 1px 0 rgba(255,255,255,0.04), var(--shadow); }
       .slide-in { animation: slideIn 0.35s cubic-bezier(0.16,1,0.3,1); }
       @keyframes slideIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
       .bilan-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; margin-bottom: 24px; }
@@ -832,7 +833,7 @@ function DashboardStyles() {
       .section-header.relaxed { align-items: flex-start; }
       .section-header p { margin: 7px 0 0; color: var(--muted); font-size: 14px; }
       .btn-submit, .btn-secondary, .btn-danger { min-height: 43px; border-radius: 10px; border: 0; padding: 0 18px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700; transition: transform 0.2s, box-shadow 0.2s, background 0.2s; }
-      .btn-submit { width: 100%; background: linear-gradient(135deg, var(--primary), var(--accent)); color: #fff; }
+      .btn-submit { width: 100%; background: linear-gradient(135deg, #4D8DF7, #3B74F2); color: #fff; }
       .btn-submit.inline { width: auto; }
       .btn-submit:hover, .btn-danger:hover { transform: translateY(-1px); box-shadow: 0 14px 26px rgba(37,99,235,0.22); }
       .btn-submit:disabled { opacity: 0.7; cursor: not-allowed; transform: none; box-shadow: none; }
@@ -844,14 +845,14 @@ function DashboardStyles() {
       .bars { flex: 1; width: 100%; display: flex; align-items: flex-end; gap: 5px; }
       .bar { flex: 1; min-height: 8px; border-radius: 7px 7px 0 0; }
       .bar.loan { background: linear-gradient(180deg, #38BDF8, #2563EB); }
-      .bar.repay { background: linear-gradient(180deg, #A78BFA, #7C3AED); }
+      .bar.repay { background: linear-gradient(180deg, #FCD34D, #F97316); }
       .bar-group span, .legend, th, td { color: var(--muted); }
       .bar-group span { max-width: 76px; font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
       .legend { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; font-size: 12px; margin-top: 12px; }
       .legend span { display: inline-flex; align-items: center; gap: 7px; }
       .legend i { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
       .legend-blue { background: #2563EB; }
-      .legend-purple { background: #7C3AED; }
+      .legend-purple { background: #F97316; }
       .table-wrapper { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
       table { width: 100%; border-collapse: collapse; min-width: 760px; }
       .compact table { min-width: 560px; }
